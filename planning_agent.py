@@ -1,6 +1,6 @@
 # planning_agent.py
 from strands import Agent, tool
-from strands.models.anthropic import AnthropicModel
+from strands.models.openai import OpenAIModel
 from strands_tools import calculator, current_time
 import os
 import json
@@ -70,16 +70,15 @@ class PlanningAgent:
         self.agent_capabilities = self._define_agent_capabilities()
         
     def _setup_model(self):
-        """Initialize the Anthropic model optimized for planning"""
-        api_key = os.getenv("ANTHROPIC_API_KEY")
+        """Initialize the COHERE model optimized for planning"""
+        api_key = os.getenv("COHERE_API_KEY")
         if not api_key:
-            raise ValueError("ANTHROPIC_API_KEY not found in environment variables")
+            raise ValueError("COHERE_API_KEY not found in environment variables")
             
-        return AnthropicModel(
-            client_args={"api_key": api_key},
-            max_tokens=4096,  # Higher limit for detailed planning
-            model_id="claude-sonnet-4-20250514",
-            params={"temperature": 0.2}  # Lower temp for more consistent planning
+        return OpenAIModel(
+            client_args={"api_key": api_key}, # Higher limit for detailed planning
+            model_id="command-a-03-2025",
+            params={"temperature": 0.2, "max_tokens": 1096}  # Lower temp for more consistent planning
         )
     
     def _define_agent_capabilities(self):

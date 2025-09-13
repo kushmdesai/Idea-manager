@@ -27,16 +27,14 @@ class ResearcherAgent:
         
     def _setup_model(self):
         """Initialize the Cohere model"""
-        api_key = os.getenv("Cohere_API_KEY")
+        api_key = os.getenv("COHERE_API_KEY")
         if not api_key:
-            raise ValueError("Cohere_API_KEY not found in environment variables")
+            raise ValueError("COHERE_API_KEY not found in environment variables")
             
         return OpenAIModel(
             client_args={"api_key": api_key, "base_url": "https://api.cohere.ai/compatibility/v1"},
-            model_id="command-a-03-2025",
-            max_tokens=2048,  # Increased for detailed research
-            model_id="claude-sonnet-4-20250514",
-            params={"temperature": 0.3}  # Lower temp for more focused research
+            model_id="command-a-03-2025",  # Increased for detailed research
+            params={"temperature": 0.3, "stream_options": None, "mak_tokens": 1096}  # Lower temp for more focused research
         )
     
     def _setup_github_mcp(self):
